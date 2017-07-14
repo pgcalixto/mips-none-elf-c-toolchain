@@ -20,4 +20,19 @@ RUN apt-get update && apt-get install -qq
  && rm gcc-6.3.0.tar.gz \
  && wget -q ftp://sourceware.org/pub/newlib/newlib-2.5.0.20170623.tar.gz \
  && tar -xzf newlib-2.5.0.20170623.tar.gz \
- && rm newlib-2.5.0.20170623.tar.gz
+ && rm newlib-2.5.0.20170623.tar.gz \
+ && export TARGET=mips-none-elf \
+ && export PREFIX=/usr/local/$TARGET \
+ && export PATH=$PATH:$PREFIX/bin
+ && mkdir build-binutils \
+ && cd build-binutils \
+ && ../binutils-2.28/configure --target=$TARGET --prefix=$PREFIX \
+ && make all \
+ && make install \
+ && cd ..
+ && mkdir build-gcc \
+ && cd build-gcc \
+ && ../gcc-4.1.1/configure --target=$TARGET --prefix=$PREFIX --without-headers --with-newlib  --with-gnu-as --with-gnu-ld \
+ && make all-gcc \
+ && make install-gcc \
+ && cd ..
