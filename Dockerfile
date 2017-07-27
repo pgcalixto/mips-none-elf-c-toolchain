@@ -4,6 +4,16 @@ FROM ubuntu:16.04
 # Set version and description of mips-none-elf-gcc
 LABEL version="1.0" description="mips-none-elf toolchain"
 
+# Set binutils, GCC and newlib versions
+ARG BINUTILS_VERSION=2.28
+ARG GCC_VERSION=6.3.0
+ARG NEWLIB_VERSION=2.5.0.20170623
+
+# Set build parameters
+ARG TARGET=mips-none-elf
+ARG PREFIX=/usr/local/$TARGET
+ARG PATH=$PATH:$PREFIX/bin
+
 WORKDIR /home
 
 RUN apt-get update && apt-get install -qq \
@@ -13,28 +23,24 @@ RUN apt-get update && apt-get install -qq \
     g++ \
     make \
     wget \
- && wget http://ftp.gnu.org/gnu/binutils/binutils-2.28.tar.gz \
- && tar -xzf binutils-2.28.tar.gz \
- && rm binutils-2.28.tar.gz \
- && wget http://mirrors-usa.go-parts.com/gcc/releases/gcc-6.3.0/gcc-6.3.0.tar.gz \
- && tar -xzf gcc-6.3.0.tar.gz \
- && rm gcc-6.3.0.tar.gz \
- && wget -q ftp://sourceware.org/pub/newlib/newlib-2.5.0.20170623.tar.gz \
- && tar -xzf newlib-2.5.0.20170623.tar.gz \
- && rm newlib-2.5.0.20170623.tar.gz \
- && export TARGET=mips-none-elf \
- && export PREFIX=/usr/local/$TARGET \
- && export PATH=$PATH:$PREFIX/bin
+ && wget http://ftp.gnu.org/gnu/binutils/binutils-$BINUTILS_VERSION.tar.gz \
+ && tar -xzf binutils-$BINUTILS_VERSION.tar.gz \
+ && rm binutils-$BINUTILS_VERSION.tar.gz \
+ && wget http://mirrors-usa.go-parts.com/gcc/releases/gcc-$GCC_VERSION/gcc-$GCC_VERSION.tar.gz \
+ && tar -xzf gcc-$GCC_VERSION.tar.gz \
+ && rm gcc-$GCC_VERSION.tar.gz \
+ && wget ftp://sourceware.org/pub/newlib/newlib-$NEWLIB_VERSION.tar.gz \
+ && tar -xzf newlib-$NEWLIB_VERSION.tar.gz \
+ && rm newlib-$NEWLIB_VERSION.tar.gz \
  && mkdir build-binutils \
  && cd build-binutils \
- && ../binutils-2.28/configure --target=$TARGET --prefix=$PREFIX \
+ && ../binutils-$BINUTILS_VERSION/configure --target=$TARGET --prefix=$PREFIX \
  && make -j5 all \
  && make -j5 install \
- && cd ../gcc-6.3.0 \
+ && cd ../gcc-$GCC_VERSION \
  && ./contrib/download_prerequisites \
  && mkdir ../build-gcc \
  && cd ../build-gcc \
- && ../gcc-6.3.0/configure --target=$TARGET --prefix=$PREFIX --without-headers --with-newlib  --with-gnu-as --with-gnu-ld \
+ && ../gcc-$GCC_VERSION/configure --target=$TARGET --prefix=$PREFIX --without-headers --with-newlib  --with-gnu-as --with-gnu-ld \
  && make -j5 all-gcc \
- && make -j5 install-gcc \
- && cd ..
+ && make -j5 install-gcc
