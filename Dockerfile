@@ -28,13 +28,13 @@ RUN apt-get update && apt-get install -qq \
  && mkdir build-binutils \
  && cd build-binutils \
  && ../binutils-2.28/configure --target=$TARGET --prefix=$PREFIX \
- && make all \
- && make install \
+ && make -j5 all \
+ && make -j5 install \
  && cd ../gcc-6.3.0 \
  && ./contrib/download_prerequisites \
  && mkdir ../build-gcc \
  && cd ../build-gcc \
  && ../gcc-6.3.0/configure --target=$TARGET --prefix=$PREFIX --without-headers --with-newlib  --with-gnu-as --with-gnu-ld \
- && make all-gcc \
- && make install-gcc \
+ && make -j5 all-gcc \
+ && make -j5 install-gcc \
  && cd ..
