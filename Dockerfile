@@ -6,10 +6,13 @@ LABEL version="1.0" description="mips-none-elf toolchain"
 
 WORKDIR /home
 
-RUN apt-get update && apt-get install -qq
-    wget \
+RUN apt-get update && apt-get install -qq \
+    bzip2 \
     gcc \
+    gcc-multilib \
+    g++ \
     make \
+    wget \
  && wget http://ftp.gnu.org/gnu/binutils/binutils-2.28.tar.gz \
  && tar -xzf binutils-2.28.tar.gz \
  && rm binutils-2.28.tar.gz \
