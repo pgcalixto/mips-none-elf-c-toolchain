@@ -29,10 +29,10 @@ RUN apt-get update && apt-get install -qq
  && ../binutils-2.28/configure --target=$TARGET --prefix=$PREFIX \
  && make all \
  && make install \
- && cd ..
+ && cd .. \
  && mkdir build-gcc \
  && cd build-gcc \
- && ../gcc-4.1.1/configure --target=$TARGET --prefix=$PREFIX --without-headers --with-newlib  --with-gnu-as --with-gnu-ld \
+ && ../gcc-6.3.0/configure --target=$TARGET --prefix=$PREFIX --without-headers --with-newlib  --with-gnu-as --with-gnu-ld \
  && make all-gcc \
  && make install-gcc \
  && cd ..
