@@ -6,16 +6,14 @@ LABEL version="1.0" description="mips-none-elf toolchain"
 
 WORKDIR /home
 
-ADD http://ftp.gnu.org/gnu/binutils/binutils-2.28.tar.gz \
-    http://mirrors-usa.go-parts.com/gcc/releases/gcc-6.3.0/gcc-6.3.0.tar.gz \
-    ./
-
 RUN apt-get update && apt-get install -qq
     wget \
     gcc \
     make \
+ && wget http://ftp.gnu.org/gnu/binutils/binutils-2.28.tar.gz \
  && tar -xzf binutils-2.28.tar.gz \
  && rm binutils-2.28.tar.gz \
+ && wget http://mirrors-usa.go-parts.com/gcc/releases/gcc-6.3.0/gcc-6.3.0.tar.gz \
  && tar -xzf gcc-6.3.0.tar.gz \
  && rm gcc-6.3.0.tar.gz \
  && wget -q ftp://sourceware.org/pub/newlib/newlib-2.5.0.20170623.tar.gz \
