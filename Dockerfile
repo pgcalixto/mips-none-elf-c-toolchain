@@ -12,7 +12,7 @@ ARG NEWLIB_VERSION=2.5.0.20170623
 # Set build parameters
 ARG TARGET=mips-none-elf
 ARG PREFIX=/usr/local/$TARGET
-ARG PATH=$PATH:$PREFIX/bin
+ENV PATH=$PATH:$PREFIX/bin
 
 WORKDIR /home
 
@@ -43,4 +43,13 @@ RUN apt-get update && apt-get install -qq \
  && cd ../build-gcc \
  && ../gcc-$GCC_VERSION/configure --target=$TARGET --prefix=$PREFIX --without-headers --with-newlib  --with-gnu-as --with-gnu-ld \
  && make -j5 all-gcc \
- && make -j5 install-gcc
+ && make -j5 install-gcc \
+ && mkdir ../build-newlib \
+ && cd ../build-newlib \
+ && ../newlib-$NEWLIB_VERSION/configure --target=$TARGET --prefix=$PREFIX \
+ && make -j5 all \
+ && make -j5 install \
+ && cd ../build-gcc \
+ && ../gcc-$GCC_VERSION/configure --target=$TARGET --prefix=$PREFIX --with-newlib --with-gnu-as --with-gnu-ld --disable-shared --disable-libssp \
+ && make -j5 all \
+ && make -j5 install
