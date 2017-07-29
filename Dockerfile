@@ -53,6 +53,7 @@ RUN apt-get update && apt-get install -qq \
  && ../gcc-$GCC_VERSION/configure --target=$TARGET --prefix=$PREFIX --with-newlib --with-gnu-as --with-gnu-ld --disable-shared --disable-libssp \
  && make -j5 all \
  && make -j5 install \
+ && cd .. \
  && rm -rf binutils-$BINUTILS_VERSION \
  && rm -rf gcc-$GCC_VERSION \
  && rm -rf newlib-$NEWLIB_VERSION \
