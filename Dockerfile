@@ -59,4 +59,12 @@ RUN apt-get update && apt-get install -qq \
  && rm -rf newlib-$NEWLIB_VERSION \
  && rm -rf build-binutils \
  && rm -rf build-gcc \
- && rm -rf build-newlib
+ && rm -rf build-newlib \
+ && apt-get apt-get purge --autoremove -qq \
+    bzip2 \
+    gcc \
+    gcc-multilib \
+    g++ \
+    make \
+    wget \
+ && rm -rf /var/lib/apt/lists/*
