@@ -60,7 +60,7 @@ RUN apt-get update && apt-get install -qq \
  && rm -rf build-binutils \
  && rm -rf build-gcc \
  && rm -rf build-newlib \
- && apt-get apt-get purge --autoremove -qq \
+ && apt-get purge --autoremove -qq \
     bzip2 \
     gcc \
     gcc-multilib \
